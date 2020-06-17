@@ -30,7 +30,7 @@ const Connect4ClientRemote = Client({
 
 export const Connect4AppMultiRemote = () => (
   <div>
-    <Connect4ClientRemote playerID="0" />
-    <Connect4ClientRemote playerID="1" />
+    <Connect4ClientRemote gameID="connect4id" playerID="0" />
+    <Connect4ClientRemote gameID="connect4id" playerID="1" />
   </div>
 );

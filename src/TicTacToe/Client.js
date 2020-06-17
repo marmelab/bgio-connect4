@@ -30,7 +30,7 @@ const TicTacToeClientRemote = Client({
 
 export const TicTacToeAppMultiRemote = () => (
   <div>
-    <TicTacToeClientRemote playerID="0" />
-    <TicTacToeClientRemote playerID="1" />
+    <TicTacToeClientRemote gameID="tictactoeid" playerID="0" />
+    <TicTacToeClientRemote gameID="tictactoeid" playerID="1" />
   </div>
 );
