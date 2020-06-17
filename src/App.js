@@ -1,42 +1,35 @@
 import React from "react";
-import { Client } from "boardgame.io/react";
-import { Local, SocketIO } from "boardgame.io/multiplayer";
-import { TicTacToe } from "./Game";
-import { TicTacToeBoard } from "./Board";
+import { Lobby } from "boardgame.io/react";
+import {
+  TicTacToeGame,
+  TicTacToeBoard,
+  TicTacToeAppSingle,
+  TicTacToeAppMultiLocal,
+  TicTacToeAppMultiRemote,
+} from "./TicTacToe";
+import {
+  Connect4Game,
+  Connect4Board,
+  Connect4AppSingle,
+  Connect4AppMultiLocal,
+  Connect4AppMultiRemote,
+} from "./Connect4";
 
-const App = Client({
-  game: TicTacToe,
-  board: TicTacToeBoard,
-});
+export default TicTacToeAppMultiRemote;
 
-//export default App;
+const importedGames = [
+  { game: TicTacToeGame, board: TicTacToeBoard },
+  { game: Connect4Game, board: Connect4Board },
+];
 
-const TicTacToeClient = Client({
-  game: TicTacToe,
-  board: TicTacToeBoard,
-  multiplayer: Local(),
-});
+const GameLobby = () => {
+  return (
+    <Lobby
+      gameServer={`https://${window.location.hostname}:8000`}
+      lobbyServer={`https://${window.location.hostname}:8000`}
+      gameComponents={[importedGames]}
+    />
+  );
+};
 
-const AppMulti = () => (
-  <div>
-    <TicTacToeClient playerID="0" />
-    <TicTacToeClient playerID="1" />
-  </div>
-);
-
-//export default AppMulti;
-
-const TicTacToeRemote = Client({
-  game: TicTacToe,
-  board: TicTacToeBoard,
-  multiplayer: SocketIO({ server: "localhost:8000" }),
-});
-
-const AppRemote = () => (
-  <div>
-    <TicTacToeRemote playerID="0" />
-    <TicTacToeRemote playerID="1" />
-  </div>
-);
-
-export default AppRemote;
+//export default GameLobby;
