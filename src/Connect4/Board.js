@@ -1,6 +1,6 @@
 import React from "react";
 
-export const TicTacToeBoard = ({ moves, G, ctx }) => {
+const Connect4Board = ({ moves, G, ctx }) => {
   const onClick = (id) => {
     moves.clickCell(id);
   };
@@ -46,3 +46,5 @@ export const TicTacToeBoard = ({ moves, G, ctx }) => {
     </div>
   );
 };
+
+export default Connect4Board;

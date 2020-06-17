@@ -24,7 +24,8 @@ const IsVictory = (cells) => {
 // Return true if all `cells` are occupied.
 const IsDraw = (cells) => cells.filter((c) => c === null).length === 0;
 
-export const TicTacToe = {
+const Connect4Game = {
+  name: "connect4",
   setup: () => ({ cells: Array(9).fill(null) }),
   turn: {
     moveLimit: 1,
@@ -57,3 +58,5 @@ export const TicTacToe = {
     },
   },
 };
+
+export default Connect4Game;
