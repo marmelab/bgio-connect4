@@ -1,48 +1,76 @@
 import React from "react";
+import styled from "@emotion/styled";
+import { isColumnFull } from "./BoardModel";
 
-export const TicTacToeBoard = ({ moves, G, ctx }) => {
-  const onClick = (id) => {
-    moves.clickCell(id);
-  };
+import Cell from "./Cell";
+import ControlButton from "./ControlButton";
 
-  let winner = "";
-  if (ctx.gameover) {
-    winner =
+const styles = {
+  container: {
+    display: "flex",
+    flex: 0,
+    flexDirection: "column",
+  },
+  header: {
+    display: "flex",
+    flex: 0,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-around",
+  },
+  button: {
+    display: "flex",
+    flex: 1,
+  },
+  table: {
+    display: "flex",
+    flex: 0,
+    flexDirection: "row",
+    justifyContent: "space-around",
+    backgroundColor: "steelblue",
+  },
+  row: {
+    display: "flex",
+    flex: 1,
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "stretch",
+  },
+};
+
+const Container = styled.div(styles.container);
+const Header = styled.div(styles.header);
+const Table = styled.div(styles.table);
+const Row = styled.div(styles.row);
+
+export const ConnectFourBoard = ({ G, ctx, moves }) => (
+  <Container>
+    <Header>
+      {G.cells.map((cell, x) => (
+        <ControlButton
+          enabled={!isColumnFull(G.cells, x)}
+          column={x}
+          moves={moves}
+          key={`dropdisc-controlbutton-${x}`}
+          style={styles.button}
+        />
+      ))}
+    </Header>
+    <Table>
+      {G.cells.map((column, x) => (
+        <Row key={`column-${x}`}>
+          {column.map((cell, y) => (
+            <Cell color={cell} key={`cell-${x}-${y}`} />
+          ))}
+        </Row>
+      ))}
+    </Table>
+    {ctx.gameover ? (
       ctx.gameover.winner !== undefined ? (
         <div id="winner">Winner: {ctx.gameover.winner}</div>
       ) : (
         <div id="winner">Draw!</div>
-      );
-  }
-
-  const cellStyle = {
-    border: "1px solid #555",
-    width: "50px",
-    height: "50px",
-    lineHeight: "50px",
-    textAlign: "center",
-  };
-
-  let tbody = [];
-  for (let i = 0; i < 3; i++) {
-    let cells = [];
-    for (let j = 0; j < 3; j++) {
-      const id = 3 * i + j;
-      cells.push(
-        <td style={cellStyle} key={id} onClick={() => onClick(id)}>
-          {G.cells[id]}
-        </td>
-      );
-    }
-    tbody.push(<tr key={i}>{cells}</tr>);
-  }
-
-  return (
-    <div>
-      <table id="board">
-        <tbody>{tbody}</tbody>
-      </table>
-      {winner}
-    </div>
-  );
-};
+      )
+    ) : null}
+  </Container>
+);

@@ -1,56 +1,44 @@
 import { INVALID_MOVE } from "boardgame.io/core";
+import {
+  initializeCells,
+  isFull,
+  isColumnFull,
+  isVictory,
+  getRowNumber,
+} from "./BoardModel";
 
-// Return true if `cells` is in a winning configuration.
-const IsVictory = (cells) => {
-  const positions = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-  ];
+const WIDTH = 7;
+const HEIGHT = 6;
 
-  const isRowComplete = (row) => {
-    const symbols = row.map((i) => cells[i]);
-    return symbols.every((i) => i !== null && i === symbols[0]);
-  };
-
-  return positions.map(isRowComplete).some((i) => i === true);
-};
-
-// Return true if all `cells` are occupied.
-const IsDraw = (cells) => cells.filter((c) => c === null).length === 0;
-
-export const TicTacToe = {
-  setup: () => ({ cells: Array(9).fill(null) }),
+export const ConnectFour = {
+  setup: () => ({ cells: initializeCells(WIDTH, HEIGHT) }),
   turn: {
     moveLimit: 1,
   },
   moves: {
-    clickCell: (G, ctx, id) => {
-      if (G.cells[id] !== null) {
+    clickColumn: (G, ctx, id) => {
+      if (isColumnFull(G.cells, id)) {
         return INVALID_MOVE;
       }
-      G.cells[id] = ctx.currentPlayer;
+
+      G.cells[id][getRowNumber(G.cells, id)] =
+        parseInt(ctx.currentPlayer, 10) + 1;
     },
   },
   endIf: (G, ctx) => {
-    if (IsVictory(G.cells)) {
+    /*if (isVictory(G.cells)) {
       return { winner: ctx.currentPlayer };
-    }
-    if (IsDraw(G.cells)) {
+    }*/
+    if (isFull(G.cells)) {
       return { draw: true };
     }
   },
   ai: {
     enumerate: (G, ctx) => {
       let moves = [];
-      for (let i = 0; i < 9; i++) {
+      for (let i = 0; i < WIDTH; i++) {
         if (G.cells[i] === null) {
-          moves.push({ move: "clickCell", args: [i] });
+          moves.push({ move: "clickColumn", args: [i] });
         }
       }
       return moves;
