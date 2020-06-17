@@ -9,4 +9,4 @@ import {
   Connect4AppMultiRemote,
 } from "./Connect4";
 
-export default Connect4AppMultiRemote;
+export default TicTacToeAppMultiRemote;
